@@ -1,0 +1,100 @@
+var myFigure;
+var shapes;//оголосили масив
+
+function game(){//оголошення нової функції
+    myFigure = new figure();//створюється новий об'єкт
+    myFigure.update();//при кожному оновленні об'єкта викликається метод 
+}
+
+function figure(){//оголошення нової функції
+    var canvas = document.getElementById("myCanvas");//посилання на веб-сторінку
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#0000FF";//колір
+    ctx.fillRect(20,20,20,20);//кординати
+
+    this.x = 20;
+    this.y = 20;
+    this.width = 20;//ширина
+    this.height = 20;//висота
+
+    this.update = function(){//оголошення методу
+        ctx.clearRect(0,0,470,270);//стирає попередню позицію
+        make_shape();//функція
+        ctx.fillRect(this.x, this.y, 20, 20)
+
+        for(i = 0; i<shapes.length; i++){//перевірка
+            if(myFigure.crashEx(shapes[i])){
+                lose();
+                return;
+            }
+        }
+
+        if((this.x >= 440 && this.x <= 460)&&(this.y >= 20 && this.y <=40)){
+            alert("you win")
+        }
+    };
+
+    this.crashEx = function(){//оголошення методу
+        var left = this.x;//позиція
+        var right = this.x + (this.width);//позиція
+        var top = this.y;//позиція
+        var buttom = this.y + (this.height);//позиція
+
+        var s_left = some_object.x;//позиція
+        var s_right = some_object.x + (some_object.width);//позиція
+        var s_top = some_object.y;//позиція
+        var s_buttom = some_object.y + (some_object.height);//позиція
+
+        var crash  = true;
+        if((buttom < s_top) || (top > s_buttom) || (right < s_left) || (left > s_right)){//перевірка
+            crash = false;//повернення результату 
+        }
+        return crash;//повернення результату 
+    }
+
+}
+
+function right(){//функція
+    myFigure.x += 20;//зміна координат
+    myFigure.update();//оновлення відображення
+}
+
+function left(){//функція
+    myFigure.x -= 20;//зміна координат
+    myFigure.update();//оновлення відображення
+}
+
+function up(){//функція
+    myFigure.y -= 20;//зміна координат
+    myFigure.update();//оновлення відображення
+}
+
+function down(){//функція
+    myFigure.y += 20;//зміна координат
+    myFigure.update();//оновлення відображення
+}
+
+function make_shape(){
+    shapes = []//порожній список
+    shapes.push(newshape(60,0,10,220,"#FF0000");//додавання фігур
+    shape(120,60,10,220,"#00FF00");
+    shape(180,0,10,220,"#F70C53");
+    shape(240,60,10,220,"#D10CF7");
+    shape(300,0,10,220,"#ED7E0C");
+    shape(360,60,10,220,"#134EF0");
+}
+
+
+function shape(x, y, width, height, color){
+    this.x = x;//визначення параметрів
+    this.y = y;//визначення параметрів
+    this.width = width;//визначення параметрів
+    this.height = height;//визначення параметрів
+    this.color = color;//визначення параметрів
+
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");//посилання на елемент canvas 
+    ctx.fillStyle = this.color;//малювання фігури
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.fillStyle = "#0000FF";//зміна коліру
+}
